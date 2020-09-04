@@ -1,51 +1,51 @@
 import { NativeModules, processColor } from "react-native";
 
-const RNCalendarEvents = NativeModules.RNCalendarEvents;
+const CalendarEvents = NativeModules.CalendarEvents;
 
 export default {
   async checkPermissions(readOnly = false) {
-    return RNCalendarEvents.checkPermissions(readOnly);
+    return CalendarEvents.checkPermissions(readOnly);
   },
   async requestPermissions(readOnly = false) {
-    return RNCalendarEvents.requestPermissions(readOnly);
+    return CalendarEvents.requestPermissions(readOnly);
   },
 
   async fetchAllEvents(startDate, endDate, calendars = []) {
-    return RNCalendarEvents.findAllEvents(startDate, endDate, calendars);
+    return CalendarEvents.findAllEvents(startDate, endDate, calendars);
   },
 
   async findCalendars() {
-    return RNCalendarEvents.findCalendars();
+    return CalendarEvents.findCalendars();
   },
 
   async saveCalendar(options = {}) {
-    return RNCalendarEvents.saveCalendar({
+    return CalendarEvents.saveCalendar({
       ...options,
       color: options.color ? processColor(options.color) : undefined,
     });
   },
 
   async removeCalendar(id) {
-    return RNCalendarEvents.removeCalendar(id);
+    return CalendarEvents.removeCalendar(id);
   },
 
   async findEventById(id) {
-    return RNCalendarEvents.findById(id);
+    return CalendarEvents.findById(id);
   },
 
   async saveEvent(title, details, options = { sync: false }) {
-    return RNCalendarEvents.saveEvent(title, details, options);
+    return CalendarEvents.saveEvent(title, details, options);
   },
 
   async removeEvent(id, options = { sync: false }) {
-    return RNCalendarEvents.removeEvent(id, options);
+    return CalendarEvents.removeEvent(id, options);
   },
 
   async uriForCalendar() {
-    return RNCalendarEvents.uriForCalendar();
+    return CalendarEvents.uriForCalendar();
   },
 
   openEventInCalendar(eventID) {
-    RNCalendarEvents.openEventInCalendar(eventID);
+    CalendarEvents.openEventInCalendar(eventID);
   },
 };

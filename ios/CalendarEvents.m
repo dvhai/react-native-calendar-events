@@ -1,9 +1,9 @@
-#import "RNCalendarEvents.h"
+#import "CalendarEvents.h"
 #import <React/RCTConvert.h>
 #import <React/RCTUtils.h>
 #import <EventKit/EventKit.h>
 
-@interface RNCalendarEvents ()
+@interface CalendarEvents ()
 @property (nonatomic, readonly) EKEventStore *eventStore;
 @end
 
@@ -25,7 +25,7 @@ static NSString *const _availability = @"availability";
 static NSString *const _attendees    = @"attendees";
 dispatch_queue_t serialQueue;
 
-@implementation RNCalendarEvents
+@implementation CalendarEvents
 
 - (NSError *)exceptionToError:(NSException *)exception {
     NSMutableDictionary * info = [NSMutableDictionary dictionary];
@@ -36,7 +36,7 @@ dispatch_queue_t serialQueue;
     [info setValue:exception.userInfo forKey:@"ExceptionUserInfo"];
 
     NSError *error = [[NSError alloc]
-                      initWithDomain:@"RNCalendarEvents"
+                      initWithDomain:@"CalendarEvents"
                       code:-1
                       userInfo:info
                       ];
@@ -76,7 +76,7 @@ RCT_EXPORT_MODULE()
     self = [super init];
     if (self) {
         _eventStore = [[EKEventStore alloc] init];
-        serialQueue = dispatch_queue_create("rncalendarevents.queue", DISPATCH_QUEUE_SERIAL);
+        serialQueue = dispatch_queue_create("CalendarEvents.queue", DISPATCH_QUEUE_SERIAL);
     }
     return self;
 }
@@ -587,7 +587,7 @@ RCT_EXPORT_MODULE()
         }
     }
     @catch (NSException *exception) {
-        NSLog(@"RNCalendarEvents encountered an issue while serializing event (attendees) '%@': %@", event.title, exception.reason);
+        NSLog(@"CalendarEvents encountered an issue while serializing event (attendees) '%@': %@", event.title, exception.reason);
     }
     
     @try {
@@ -648,7 +648,7 @@ RCT_EXPORT_MODULE()
         }
     }
     @catch (NSException *exception) {
-        NSLog(@"RNCalendarEvents encountered an issue while serializing event (alarms) '%@': %@", event.title, exception.reason);
+        NSLog(@"CalendarEvents encountered an issue while serializing event (alarms) '%@': %@", event.title, exception.reason);
     }
 
     if (event.startDate) {
@@ -691,7 +691,7 @@ RCT_EXPORT_MODULE()
         }
     }
     @catch (NSException *exception) {
-        NSLog(@"RNCalendarEvents encountered an issue while serializing event (recurrenceRules) '%@': %@", event.title, exception.reason);
+        NSLog(@"CalendarEvents encountered an issue while serializing event (recurrenceRules) '%@': %@", event.title, exception.reason);
     }
     
     [formedCalendarEvent setValue:[self availabilityStringMatchingConstant:event.availability] forKey:_availability];
@@ -715,7 +715,7 @@ RCT_EXPORT_MODULE()
         }
     }
     @catch (NSException *exception) {
-        NSLog(@"RNCalendarEvents encountered an issue while serializing event (structuredLocation) '%@': %@", event.title, exception.reason);
+        NSLog(@"CalendarEvents encountered an issue while serializing event (structuredLocation) '%@': %@", event.title, exception.reason);
     }
 
     return [formedCalendarEvent copy];
@@ -911,10 +911,10 @@ RCT_EXPORT_METHOD(fetchAllEvents:(NSDate *)startDate endDate:(NSDate *)endDate c
                                                                       endDate:endDate
                                                                     calendars:eventCalendars];
 
-    __weak RNCalendarEvents *weakSelf = self;
+    __weak CalendarEvents *weakSelf = self;
     dispatch_async(serialQueue, ^{
         @try {
-            RNCalendarEvents *strongSelf = weakSelf;
+            CalendarEvents *strongSelf = weakSelf;
             NSArray *calendarEvents = [[strongSelf.eventStore eventsMatchingPredicate:predicate] sortedArrayUsingSelector:@selector(compareStartDateWithEvent:)];
             if (calendarEvents) {
                 resolve([strongSelf serializeCalendarEvents:calendarEvents]);
@@ -937,10 +937,10 @@ RCT_EXPORT_METHOD(findEventById:(NSString *)eventId resolver:(RCTPromiseResolveB
         return;
     }
 
-    __weak RNCalendarEvents *weakSelf = self;
+    __weak CalendarEvents *weakSelf = self;
     dispatch_async(serialQueue, ^{
         @try {
-            RNCalendarEvents *strongSelf = weakSelf;
+            CalendarEvents *strongSelf = weakSelf;
 
             EKEvent *calendarEvent = (EKEvent *)[self.eventStore calendarItemWithIdentifier:eventId];
             if (calendarEvent) {
@@ -969,10 +969,10 @@ RCT_EXPORT_METHOD(saveEvent:(NSString *)title
     NSMutableDictionary *details = [NSMutableDictionary dictionaryWithDictionary:settings];
     [details setValue:title forKey:_title];
 
-    __weak RNCalendarEvents *weakSelf = self;
+    __weak CalendarEvents *weakSelf = self;
     dispatch_async(serialQueue, ^{
         @try {
-            RNCalendarEvents *strongSelf = weakSelf;
+            CalendarEvents *strongSelf = weakSelf;
 
             NSDictionary *response = [strongSelf buildAndSaveEvent:details options:options];
 
@@ -1009,10 +1009,10 @@ RCT_EXPORT_METHOD(removeEvent:(NSString *)eventId options:(NSDictionary *)option
                                                                         endDate:endDate
                                                                       calendars:nil];
 
-        __weak RNCalendarEvents *weakSelf = self;
+        __weak CalendarEvents *weakSelf = self;
         dispatch_async(serialQueue, ^{
             @try {
-                RNCalendarEvents *strongSelf = weakSelf;
+                CalendarEvents *strongSelf = weakSelf;
                 NSArray *calendarEvents = [strongSelf.eventStore eventsMatchingPredicate:predicate];
                 EKEvent *eventInstance;
                 BOOL success;
@@ -1047,10 +1047,10 @@ RCT_EXPORT_METHOD(removeEvent:(NSString *)eventId options:(NSDictionary *)option
             }
         });
     } else {
-      __weak RNCalendarEvents *weakSelf = self;
+      __weak CalendarEvents *weakSelf = self;
       dispatch_async(serialQueue, ^{
           @try {
-              RNCalendarEvents *strongSelf = weakSelf;
+              CalendarEvents *strongSelf = weakSelf;
               
               EKEvent *calendarEvent = (EKEvent *)[self.eventStore calendarItemWithIdentifier:eventId];
               NSError *error = nil;
