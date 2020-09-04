@@ -91,7 +91,7 @@ public class MainApplication extends Application implements ReactApplication {
 
 ### iOS specific instructions
 
-Add `RNCalendarEvents`, as well as `EventKit.framework` to project libraries if not already done.
+Add `CalendarEvents`, as well as `EventKit.framework` to project libraries if not already done.
 
 Setting up privacy usage descriptions may also be required depending on which iOS version is supported. This involves updating the Property List, `Info.plist`, with the corresponding key for the EKEventStore api. [Info.plist reference](https://developer.apple.com/library/content/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html).
 
@@ -107,7 +107,7 @@ For updating the `Info.plist` key/value via XCode, add a `Privacy - Calendars Us
 The following API allows for interacting with both iOS and Android device calendars. See the full list of available [event fields](#event-fields).
 
 ```javascript
-import RNCalendarEvents from "react-native-calendar-events";
+import CalendarEvents from "react-native-calendar-events";
 ```
 
 ### `checkPermissions`
@@ -116,7 +116,7 @@ Get calendar authorization status.
 You may check for the default read/write access with no argument, or read-only access on Android by passing boolean true. iOS is always read/write.
 
 ```javascript
-RNCalendarEvents.checkPermissions((readOnly = false));
+CalendarEvents.checkPermissions((readOnly = false));
 ```
 
 Returns: **Promise**
@@ -141,7 +141,7 @@ You do that by altering your AndroidManifest.xml to "remove" the WRITE_CALENDAR 
 ```
 
 ```javascript
-RNCalendarEvents.requestPermissions((readOnly = false));
+CalendarEvents.requestPermissions((readOnly = false));
 ```
 
 > Android note: This is necessary for targeted SDK of >=23.
@@ -157,7 +157,7 @@ Returns: **Promise**
 Finds all the calendars on the device.
 
 ```javascript
-RNCalendarEvents.findCalendars();
+CalendarEvents.findCalendars();
 ```
 
 Returns: **Promise**
@@ -170,7 +170,7 @@ Returns: **Promise**
 Create a calendar.
 
 ```javascript
-RNCalendarEvents.saveCalendar(calendar);
+CalendarEvents.saveCalendar(calendar);
 ```
 
 Arguments:
@@ -187,7 +187,7 @@ Returns: **Promise**
 Removes a calendar.
 
 ```javascript
-RNCalendarEvents.removeCalendar(id);
+CalendarEvents.removeCalendar(id);
 ```
 
 Arguments:
@@ -205,7 +205,7 @@ Find calendar event by id.
 Returns a promise with fulfilled found events.
 
 ```javascript
-RNCalendarEvents.findEventById(id);
+CalendarEvents.findEventById(id);
 ```
 
 Arguments:
@@ -223,7 +223,7 @@ Fetch all calendar events.
 Returns a promise with fulfilled found events.
 
 ```javascript
-RNCalendarEvents.fetchAllEvents(startDate, endDate, calendars);
+CalendarEvents.fetchAllEvents(startDate, endDate, calendars);
 ```
 
 Arguments:
@@ -242,7 +242,7 @@ Returns: **Promise**
 Creates or updates a calendar event. - [wiki guide](https://github.com/wmcmahan/react-native-calendar-events/wiki/Creating-basic-event)
 
 ```javascript
-RNCalendarEvents.saveEvent(title, details, options);
+CalendarEvents.saveEvent(title, details, options);
 ```
 
 Arguments:
@@ -259,7 +259,7 @@ Returns: **Promise**
 To update an event, the event `id` must be defined. - [wiki guide](https://github.com/wmcmahan/react-native-calendar-events/wiki/Updating-events)
 
 ```javascript
-RNCalendarEvents.saveEvent(title, {
+CalendarEvents.saveEvent(title, {
   id: "FE6B128F-C0D8-4FB8-8FC6-D1D6BA015CDE",
 });
 ```
